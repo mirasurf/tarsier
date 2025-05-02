@@ -32,7 +32,7 @@ COPY testdata/embedded-images.pdf testdata/embedded-images.pdf
 RUN pip install --no-cache-dir -r requirements.txt && pip cache purge
 
 # Preload dependent models
-RUN python preload_model.py
+RUN python preload_model.py || exit 1
 
 # Set timezone
 ENV TZ="Asia/Shanghai"
