@@ -13,7 +13,7 @@ A FastAPI-based HTTP API server for parsing PDF files using the unstructured lib
 
 2. Run the server:
    ```bash
-   uvicorn app:app --port 8899 --reload
+   uvicorn tarsier:api_server --port 8899 --reload
    ```
 
 ## API Endpoints

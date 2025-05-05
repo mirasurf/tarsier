@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, APIRouter, Query
 from unstructured.partition.auto import partition
+from .element import Element
 import tempfile
 import os
 
@@ -24,7 +25,7 @@ async def health_check():
 @v1_router.post("/general")
 async def parse_file(
     file: UploadFile = File(...),
-    with_metadata: bool = Query(
+    fullmeta: bool = Query(
         False, description="Whether to include metadata in the response"
     ),
 ):
@@ -38,22 +39,24 @@ async def parse_file(
         temp_file.write(content)
         temp_file.flush()
         try:
-            elements = partition(
+            parts = partition(
                 temp_file.name,
                 strategy="hi_res",
                 skip_infer_table_types=list(),
                 hi_res_model_name="yolox",
             )
             result = []
-            for element in elements:
-                ele_details = dict()
-                category = element.category
-                ele_details["text"] = element.text
-                ele_details["text_as_html"] = element.metadata.text_as_html
-                ele_details["category"] = category
-                if with_metadata:
-                    ele_details["_metadata"] = element.metadata
-                result.append(ele_details)
+            for part in parts:
+                ele = Element(category=part.category, text=part.text)
+                if part.metadata is not None:
+                    setattr(ele, "box", part.metadata.coordinates.points)
+                    setattr(ele, "langs", part.metadata.languages)
+                    setattr(ele, "page_number", part.metadata.page_number)
+                    if "text_as_html" in dir(part.metadata):
+                        setattr(ele, "text_html", part.metadata.text_as_html)
+                if fullmeta:
+                    ele["_metadata"] = part.metadata
+                result.append(ele.model_dump())
 
             return {"status": "success", "content": result}
         except Exception as e:

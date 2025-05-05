@@ -4,8 +4,8 @@ unstructured.pytesseract>=0.3.12
 huggingface_hub[hf_xet]>=0.30
 onnx>=1.17.0
 onnxruntime>=1.21.0
-torch>=2.6.0
-torchvision>=0.21.0
+torch
+torchvision
 nltk>=3.9.0
 opencv-python>=4.8.0
 pdf2image>=1.16.3
@@ -18,3 +18,4 @@ python-multipart>=0.0.5
 Pillow>=10.0.0
 fastapi>=0.68.0
 uvicorn>=0.15.0
+pydantic
