@@ -25,8 +25,8 @@ async def health_check():
 @v1_router.post("/general")
 async def parse_file(
     file: UploadFile = File(...),
-    fullmeta: bool = Query(
-        False, description="Whether to include metadata in the response"
+    model: str = Query(
+        "yolox_quantized", description="unstructured's object detection model"
     ),
 ):
 
@@ -43,7 +43,7 @@ async def parse_file(
                 temp_file.name,
                 strategy="hi_res",
                 skip_infer_table_types=list(),
-                hi_res_model_name="yolox",
+                hi_res_model_name=model,
             )
             result = []
             for part in parts:
@@ -54,8 +54,6 @@ async def parse_file(
                     setattr(ele, "page_number", part.metadata.page_number)
                     if "text_as_html" in dir(part.metadata):
                         setattr(ele, "text_html", part.metadata.text_as_html)
-                if fullmeta:
-                    ele["_metadata"] = part.metadata
                 result.append(ele.model_dump())
 
             return {"status": "success", "content": result}

@@ -32,6 +32,8 @@ COPY testdata/embedded-images.pdf testdata/embedded-images.pdf
 RUN pip install --no-cache-dir -r requirements.txt && pip cache purge
 
 # Preload dependent models
+ENV HF_HUB_CACHE=/home/mirabox/model_cache
+ENV UNSTRUCTURED_DEFAULT_MODEL_NAME=yolox_quantized
 RUN python preload_model.py || exit 1
 
 # Set timezone
