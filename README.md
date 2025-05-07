@@ -29,10 +29,10 @@ A FastAPI-based HTTP API server for parsing PDF files using the unstructured lib
 ### Parse Any File (PDF/Image)
 
 ```bash
-curl -X POST "http://localhost:8899/api/v1/general" \
+curl -X POST "http://localhost:31792/api/v1/general" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
-  -F "file=@document.pdf"
+  -F "file=@testdata/embedded-images.pdf"
 ```
 
 Response data:
