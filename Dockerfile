@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt && pip cache purge
 
 # unstructured model cache
 ENV HF_HUB_CACHE=/home/mirabox/model_cache
-ENV UNSTRUCTURED_DEFAULT_MODEL_NAME=yolox_quantized
+ENV UNSTRUCTURED_DEFAULT_MODEL_NAME=yolox
 
 # Preload dependent models
 COPY preload_model.py .

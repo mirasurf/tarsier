@@ -25,15 +25,18 @@ async def health_check():
 @v1_router.post("/general")
 async def parse_file(
     file: UploadFile = File(...),
-    model: str = Query(
-        "yolox_quantized", description="unstructured's object detection model"
-    ),
+    model: str = Query("yolox", description="unstructured's object detection model"),
 ):
-
-    xlogger.info(f"Received file: {file.filename}")
+    xlogger.info(f"Received file: {file.filename}, model: {model}")
 
     # Create a temporary file with appropriate suffix
-    file_ext = os.path.splitext(file.filename)[1].lower()
+    parts = os.path.splitext(file.filename)
+    if len(parts) < 2:
+        raise HTTPException(
+            status_code=500, detail=f"no file extention parsed:{file.filename}"
+        )
+    file_ext = parts[1].lower()
+
     with tempfile.NamedTemporaryFile(delete=False, suffix=file_ext) as temp_file:
         content = await file.read()
         temp_file.write(content)
@@ -49,9 +52,10 @@ async def parse_file(
             for part in parts:
                 ele = Element(category=part.category, text=part.text)
                 if part.metadata is not None:
-                    setattr(ele, "box", part.metadata.coordinates.points)
                     setattr(ele, "langs", part.metadata.languages)
                     setattr(ele, "page_number", part.metadata.page_number)
+                    if part.metadata.coordinates:
+                        setattr(ele, "box", part.metadata.coordinates.points)
                     if "text_as_html" in dir(part.metadata):
                         setattr(ele, "text_html", part.metadata.text_as_html)
                 result.append(ele.model_dump())
