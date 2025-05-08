@@ -16,6 +16,16 @@ A FastAPI-based HTTP API server for parsing PDF files using the unstructured lib
    uvicorn tarsier:api_server --port 8899 --reload
    ```
 
+3. Run the server via docker image:
+  ```bash
+  docker run -d -p 8899:8899 \
+  --name tarsier \
+  -e HTTP_PROXY=http://host.docker.internal:7890 \
+  -e HTTPS_PROXY=http://host.docker.internal:7890 \
+  -e NO_PROXY=localhost,127.0.0.1,.cn \
+  registry.cn-hangzhou.aliyuncs.com/lacogito/tarsier:0.0.1
+  ```
+
 ## API Endpoints
 
 ### Base Endpoints

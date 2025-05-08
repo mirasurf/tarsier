@@ -13,14 +13,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt && pip cache purge
 
 # unstructured model cache
-ENV HF_HUB_CACHE=/home/mirabox/model_cache
 ENV UNSTRUCTURED_DEFAULT_MODEL_NAME=yolox
-
-# Preload dependent models
-COPY preload_model.py .
-COPY testdata/embedded-images.pdf testdata/embedded-images.pdf
-
-RUN python preload_model.py || exit 1
 
 # Expose API port
 EXPOSE 8899
