@@ -37,9 +37,8 @@ async def parse_file(
         raise HTTPException(
             status_code=500, detail=f"no file extention parsed:{file.filename}"
         )
-    file_ext = parts[1].lower()
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=file_ext) as temp_file:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=parts[1].lower()) as temp_file:
         content = await file.read()
         temp_file.write(content)
         temp_file.flush()
