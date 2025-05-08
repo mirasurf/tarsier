@@ -20,9 +20,9 @@ A FastAPI-based HTTP API server for parsing PDF files using the unstructured lib
   ```bash
   docker run -d -p 8899:8899 \
   --name tarsier \
-  -e HTTP_PROXY=http://host.docker.internal:7890 \
-  -e HTTPS_PROXY=http://host.docker.internal:7890 \
-  -e NO_PROXY=localhost,127.0.0.1,.cn \
+  -e TRANSFORMERS_OFFLINE=1 \
+  -e HF_HUB_OFFLINE=1 \
+  -v $HOME/.cache/huggingface:/root/.cache/huggingface \
   registry.cn-hangzhou.aliyuncs.com/lacogito/tarsier:0.0.1
   ```
 
