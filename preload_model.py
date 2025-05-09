@@ -4,7 +4,7 @@ from unstructured_inference.models.base import get_model
 from unstructured_inference.inference.layout import DocumentLayout
 
 model = get_model()
-DocumentLayout.from_file("testdata/embedded-images.pdf", detection_model=model)
+DocumentLayout.from_file("tests/data/embedded-images.pdf", detection_model=model)
 print("unstructured models loaded!")
 
 # preload NTLK data.

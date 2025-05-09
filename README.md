@@ -42,7 +42,7 @@ A FastAPI-based HTTP API server for parsing PDF files using the unstructured lib
 curl -X POST "http://localhost:31792/api/v1/general" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
-  -F "file=@testdata/embedded-images.pdf"
+  -F "file=@tests/data/embedded-images.pdf"
 ```
 
 Response data:
